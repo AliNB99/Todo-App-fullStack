@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .size-main {
+    display: flex;
+    min-height: calc(100vh - 6rem);
+  }
+
+  .h-auth {
+    min-height: calc(100vh - 6rem);
+  }
+}
