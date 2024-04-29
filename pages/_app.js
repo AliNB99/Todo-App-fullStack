@@ -1,8 +1,7 @@
 import Layout from "components/layout/Layout";
 import { SessionProvider } from "next-auth/react";
 import "styles/globals.css";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "react-hot-toast";
 
 export default function App({ Component, pageProps }) {
   return (
@@ -10,7 +9,7 @@ export default function App({ Component, pageProps }) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-      <ToastContainer />
+      <Toaster />
     </SessionProvider>
   );
 }

@@ -1,28 +1,30 @@
-import { useEffect, useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import toast from "react-hot-toast";
+
+import BeatLoader from "react-spinners/BeatLoader";
 
 function SigninPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
-  const { status } = useSession();
-
-  useEffect(() => {
-    if (status === "authenticated") router.replace("/");
-  }, [status]);
-
   const loginHandler = async () => {
+    setIsLoading(true);
     const res = await signIn("credentials", {
       email,
       password,
       redirect: false,
     });
-
-    if (!res.error) router.push("/");
+    if (!res.error) {
+      router.push("/");
+      setIsLoading(false);
+      toast.success("login successful");
+    }
   };
 
   return (
@@ -45,12 +47,18 @@ function SigninPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button
-          className="bg-blue-500 text-white p-2 rounded-md"
-          onClick={loginHandler}
-        >
-          Login
-        </button>
+        {isLoading ? (
+          <div className="text-center">
+            <BeatLoader size={14} color="#3693d6" />
+          </div>
+        ) : (
+          <button
+            className="bg-blue-500 text-white p-2 rounded-md"
+            onClick={loginHandler}
+          >
+            Login
+          </button>
+        )}
         <div className="flex items-center justify-center gap-1">
           <p className="text-zinc-500">Create an account?</p>
           <Link

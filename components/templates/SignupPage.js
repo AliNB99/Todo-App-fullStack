@@ -1,21 +1,19 @@
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import toast from "react-hot-toast";
+
+import BeatLoader from "react-spinners/BeatLoader";
 
 function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
-  const { status } = useSession();
-
-  useEffect(() => {
-    if (status === "authenticated") router.replace("/");
-  }, [status]);
-
   const signUpHandler = async () => {
+    setIsLoading(true);
     const res = await fetch("/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({ email, password }),
@@ -23,7 +21,11 @@ function SignupPage() {
     });
     const data = await res.json();
     console.log(data);
-    if (data.status === "success") router.push("/signin");
+    if (data.status === "success") {
+      setIsLoading(false);
+      toast.success("sign up successful");
+      router.push("/signin");
+    }
   };
 
   return (
@@ -46,12 +48,18 @@ function SignupPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button
-          className="bg-blue-500 text-white p-2 rounded-md"
-          onClick={signUpHandler}
-        >
-          Register
-        </button>
+        {isLoading ? (
+          <div className="text-center">
+            <BeatLoader size={14} color="#3693d6" />
+          </div>
+        ) : (
+          <button
+            className="bg-blue-500 text-white p-2 rounded-md"
+            onClick={signUpHandler}
+          >
+            Register
+          </button>
+        )}
         <div className="flex items-center justify-center gap-1">
           <p className="text-zinc-500">Create an account?</p>
           <Link

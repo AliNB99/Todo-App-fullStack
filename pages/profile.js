@@ -1,23 +1,20 @@
-import HomePage from "@templates/HomePage";
-import connectDB from "@/utils/connectDB";
-import { sortTodos } from "@/utils/sortTodos";
-import Users from "models/Users";
+import ProfilePage from "@templates/ProfilePage";
 import { getServerSession } from "next-auth";
+import React from "react";
 import { authOptions } from "./api/auth/[...nextauth]";
+import Users from "models/Users";
 
-function Home({ data }) {
+function Profile({ user }) {
   return (
     <div>
-      <HomePage data={data} />
+      <ProfilePage user={user} />
     </div>
   );
 }
 
-export default Home;
-
+export default Profile;
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  console.log({ session });
 
   if (!session) {
     return {
@@ -28,18 +25,9 @@ export async function getServerSideProps(context) {
     };
   }
 
-  try {
-    await connectDB();
-  } catch (error) {
-    return {
-      notFound: true,
-    };
-  }
-
   const user = await Users.findOne({ email: session.user.email });
-  const sortedData = sortTodos(user.todos);
 
   return {
-    props: { data: JSON.parse(JSON.stringify(sortedData)) },
+    props: { user: JSON.parse(JSON.stringify(user)) },
   };
 }

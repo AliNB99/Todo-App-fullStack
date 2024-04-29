@@ -5,7 +5,7 @@ import { LuListTodo } from "react-icons/lu";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import { MdDoneAll } from "react-icons/md";
 import RadioButton from "@elements/RadioButton";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 function AddTodoPage() {
   const [title, setTitle] = useState("");
@@ -13,9 +13,10 @@ function AddTodoPage() {
   const [status, setStatus] = useState("todo");
 
   const addHandler = async () => {
+    const loading = toast.loading("loading...");
     const res = await fetch("/api/todos", {
       method: "POST",
-      body: JSON.stringify({ title, status }),
+      body: JSON.stringify({ title, status, description }),
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
@@ -23,7 +24,11 @@ function AddTodoPage() {
       setTitle("");
       setDescription("");
       setStatus("todo");
+      toast.remove(loading);
       toast.success("add Todo!");
+    } else {
+      toast.remove(loading);
+      toast.error(data.message);
     }
   };
 

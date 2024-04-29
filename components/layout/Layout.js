@@ -5,10 +5,19 @@ import { GoPerson } from "react-icons/go";
 import { MdLogout } from "react-icons/md";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 function Layout({ children }) {
   const { status } = useSession();
 
+  const router = useRouter();
+
+  const signOutHandler = () => {
+    signOut();
+    toast.success("logOut successful");
+    router.replace("/signin");
+  };
   return (
     <div>
       <header className="h-28 bg-blue-600">
@@ -18,7 +27,7 @@ function Layout({ children }) {
           </Link>
           {status === "authenticated" && (
             <button
-              onClick={() => signOut()}
+              onClick={signOutHandler}
               className="text-white flex items-center gap-2 border px-2 py-1 rounded-md hover:bg-white hover:text-blue-600 transition-all"
             >
               <span>Logout</span>
