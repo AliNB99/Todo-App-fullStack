@@ -15,8 +15,8 @@ function Layout({ children }) {
 
   const signOutHandler = () => {
     signOut();
-    toast.success("logOut successful");
-    router.replace("/signin");
+    router.reload("/signin");
+    return toast.success("logOut successful");
   };
   return (
     <div>

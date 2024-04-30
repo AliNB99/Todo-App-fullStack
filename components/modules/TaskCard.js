@@ -7,7 +7,12 @@ import Link from "next/link";
 function TaskCard({ data, next, back }) {
   const router = useRouter();
 
-  const changeStatus = async (id, status) => {
+  const linkHandler = (id) => {
+    router.replace(`/todo/${id}`);
+  };
+
+  const changeStatus = async (id, status, e) => {
+    e.stopPropagation();
     const res = await fetch("/api/todos", {
       method: "PATCH",
       body: JSON.stringify({ id, status }),
@@ -27,7 +32,7 @@ function TaskCard({ data, next, back }) {
         </h1>
       )}
       {data?.map((i) => (
-        <Link key={i._id} href={`/todo/${i._id}`}>
+        <div onClick={() => linkHandler(i._id)} key={i._id}>
           <div className="shadow-md hover:shadow-normal transition-all p-4 space-y-8">
             <div
               style={{ backgroundColor: colorList[i.status] }}
@@ -41,7 +46,7 @@ function TaskCard({ data, next, back }) {
               {back ? (
                 <button
                   className="bg-orange-100 text-orange-600 flex items-center gap-1 px-2 py-1 rounded-md"
-                  onClick={() => changeStatus(i._id, back)}
+                  onClick={(e) => changeStatus(i._id, back, e)}
                 >
                   <BiLeftArrow />
                   Back
@@ -50,7 +55,7 @@ function TaskCard({ data, next, back }) {
               {next ? (
                 <button
                   className="bg-green-100 text-green-600 flex items-center gap-1 px-2 py-1 rounded-md"
-                  onClick={() => changeStatus(i._id, next)}
+                  onClick={(e) => changeStatus(i._id, next, e)}
                 >
                   Next
                   <BiRightArrow />
@@ -58,7 +63,7 @@ function TaskCard({ data, next, back }) {
               ) : null}
             </div>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );

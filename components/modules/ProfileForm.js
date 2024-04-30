@@ -37,6 +37,7 @@ function ProfileForm({ showForm, setShowForm, user }) {
         lastName: "",
         password: "",
       });
+      router.replace(router.asPath);
     } else {
       toast.remove(loading);
       toast.error(data.message);

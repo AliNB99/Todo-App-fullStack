@@ -11,8 +11,9 @@ const userSchema = new Schema({
   },
   name: String,
   lastName: String,
-  description: String,
-  todos: [{ title: String, status: String }],
+
+  todos: [{ title: String, status: String, description: String }],
+
   createdAt: {
     type: Date,
     default: () => Date.now(),
@@ -21,6 +22,6 @@ const userSchema = new Schema({
   updateAt: { type: Date, default: () => Date.now() },
 });
 
-const Users = models.Users || model("Users", userSchema);
+const Users = models.User || model("User", userSchema);
 
 export default Users;

@@ -20,10 +20,9 @@ function SignupPage() {
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
-    console.log(data);
     if (data.status === "success") {
       setIsLoading(false);
-      toast.success("sign up successful");
+      toast.success(data.message);
       router.push("/signin");
     }
   };

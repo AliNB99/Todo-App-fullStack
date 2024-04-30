@@ -1,7 +1,6 @@
 import connectDB from "@/utils/connectDB";
 import SigninPage from "@templates/SigninPage";
 import { getSession } from "next-auth/react";
-import { redirect } from "next/dist/server/api-utils";
 
 function Signin() {
   return <SigninPage />;

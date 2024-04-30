@@ -20,11 +20,14 @@ function SigninPage() {
       password,
       redirect: false,
     });
-    if (!res.error) {
-      router.push("/");
+    console.log(res);
+    if (res.error) {
       setIsLoading(false);
-      toast.success("login successful");
+      return toast.error(res.error);
     }
+    router.push("/");
+    setIsLoading(false);
+    toast.success("login successful");
   };
 
   return (
