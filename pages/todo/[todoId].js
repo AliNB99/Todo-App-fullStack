@@ -1,6 +1,6 @@
 import connectDB from "@/utils/connectDB";
 import { colorList } from "constants/statusColorList";
-import Users from "models/Users";
+import UserTodo from "models/UserTodo";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -91,7 +91,7 @@ export async function getServerSideProps(context) {
     };
   }
   const session = await getServerSession(context.req, context.res, authOptions);
-  const user = await Users.findOne({ email: session.user.email });
+  const user = await UserTodo.findOne({ email: session.user.email });
   const todo = user.todos.find((todo) => todo.id === todoId);
 
   if (!todo) {

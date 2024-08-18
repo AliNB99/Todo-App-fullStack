@@ -1,6 +1,6 @@
 import { verifyPassword } from "@/utils/auth";
 import connectDB from "@/utils/connectDB";
-import Users from "models/Users";
+import UserTodo from "models/UserTodo";
 import { authOptions } from "./auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 
@@ -21,8 +21,8 @@ export default async function handler(req, res) {
       .json({ status: "failed", message: "You are not logged in!" });
   }
 
-  const user = await Users.findOne({ email: session.user.email });
-  console.log(user);
+  const user = await UserTodo.findOne({ email: session.user.email });
+  
   if (!user) {
     return res
       .status(404)

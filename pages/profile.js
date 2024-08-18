@@ -2,7 +2,7 @@ import ProfilePage from "@templates/ProfilePage";
 import { getServerSession } from "next-auth";
 import React from "react";
 import { authOptions } from "./api/auth/[...nextauth]";
-import Users from "models/Users";
+import UserTodo from "models/UserTodo";
 
 function Profile({ user }) {
   return (
@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const user = await Users.findOne({ email: session.user.email });
+  const user = await UserTodo.findOne({ email: session.user.email });
 
   return {
     props: { user: JSON.parse(JSON.stringify(user)) },

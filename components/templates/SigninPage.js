@@ -20,7 +20,7 @@ function SigninPage() {
       password,
       redirect: false,
     });
-    console.log(res);
+   
     if (res.error) {
       setIsLoading(false);
       return toast.error(res.error);

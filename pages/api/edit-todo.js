@@ -1,7 +1,7 @@
 import connectDB from "@/utils/connectDB";
 import { authOptions } from "./auth/[...nextauth]";
 import { getServerSession } from "next-auth";
-import Users from "models/Users";
+import UserTodo from "models/UserTodo";
 
 export default async function handler(req, res) {
   try {
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       .json({ status: "failed", message: "You are not logged in!" });
   }
 
-  const user = await Users.findOne({ email: session.user.email });
+  const user = await UserTodo.findOne({ email: session.user.email });
 
   if (!user) {
     return res

@@ -1,6 +1,6 @@
 import { hashPassword } from "@/utils/auth";
 import connectDB from "@/utils/connectDB";
-import Users from "models/Users";
+import UserTodo from "models/UserTodo";
 
 async function handler(req, res) {
   if (req.method !== "POST") return;
@@ -23,7 +23,7 @@ async function handler(req, res) {
     });
   }
 
-  const existingUser = await Users.findOne({ email: email });
+  const existingUser = await UserTodo.findOne({ email: email });
 
   if (existingUser) {
     return res
@@ -33,8 +33,7 @@ async function handler(req, res) {
 
   const hashedPassword = await hashPassword(password);
 
-  const newUser = await Users.create({ email, password: hashedPassword });
-  console.log(newUser);
+  await UserTodo.create({ email, password: hashedPassword });
 
   res.status(201).json({ status: "success", message: "Created user!" });
 }

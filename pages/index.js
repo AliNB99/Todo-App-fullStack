@@ -1,7 +1,7 @@
 import HomePage from "@templates/HomePage";
 import connectDB from "@/utils/connectDB";
 import { sortTodos } from "@/utils/sortTodos";
-import Users from "models/Users";
+import UserTodo from "models/UserTodo";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 
@@ -17,7 +17,7 @@ export default Home;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  console.log({ session });
+  
 
   if (!session) {
     return {
@@ -36,7 +36,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const user = await Users.findOne({ email: session.user.email });
+  const user = await UserTodo.findOne({ email: session.user.email });
   const sortedData = sortTodos(user.todos);
 
   return {

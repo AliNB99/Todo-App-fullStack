@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import Users from "models/Users";
+import UserTodo from "models/UserTodo";
 import connectDB from "@/utils/connectDB";
 import { verifyPassword } from "@/utils/auth";
 
@@ -9,7 +9,7 @@ export const authOptions = {
   session: { strategy: "jwt" },
   providers: [
     CredentialsProvider({
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const { email, password } = credentials;
 
         try {
@@ -22,7 +22,7 @@ export const authOptions = {
           throw new Error("Invalid Data!");
         }
 
-        const user = await Users.findOne({ email: email });
+        const user = await UserTodo.findOne({ email: email });
 
         if (!user) throw new Error("User doesn't exist!");
 

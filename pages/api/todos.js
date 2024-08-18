@@ -1,5 +1,5 @@
 import connectDB from "@/utils/connectDB";
-import Users from "models/Users";
+import UserTodo from "models/UserTodo";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
 
@@ -20,7 +20,7 @@ async function handler(req, res) {
       .json({ status: "failed", message: "You are not logged in!" });
   }
 
-  const user = await Users.findOne({ email: session.user.email });
+  const user = await UserTodo.findOne({ email: session.user.email });
   if (!user) {
     return res
       .status(404)
@@ -34,7 +34,7 @@ async function handler(req, res) {
         .status(422)
         .json({ status: "failed", message: "Invaild data!" });
     }
-    console.log({ title, status, description });
+    
 
     user.todos.push({ title, status, description });
     user.save();
@@ -49,11 +49,11 @@ async function handler(req, res) {
         .json({ status: "failed", message: "Invalid data!" });
     }
 
-    const result = await Users.updateOne(
+    const result = await UserTodo.updateOne(
       { "todos._id": id },
       { $set: { "todos.$.status": status } }
     );
-    console.log(result);
+  
     res.status(200).json({ status: "success" });
   }
 }

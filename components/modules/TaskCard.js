@@ -2,13 +2,12 @@ import { RiMastodonLine } from "react-icons/ri";
 import { BiRightArrow, BiLeftArrow } from "react-icons/bi";
 import { colorList } from "constants/statusColorList";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 function TaskCard({ data, next, back }) {
   const router = useRouter();
 
   const linkHandler = (id) => {
-    router.replace(`/todo/${id}`);
+    router.redirect(`/todo/${id}`);
   };
 
   const changeStatus = async (id, status, e) => {

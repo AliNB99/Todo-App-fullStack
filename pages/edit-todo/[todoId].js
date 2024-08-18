@@ -1,6 +1,6 @@
 import connectDB from "@/utils/connectDB";
 import AddTodoPage from "@templates/AddTodoPage";
-import Users from "models/Users";
+import UserTodo from "models/UserTodo";
 import { getServerSession } from "next-auth";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import React from "react";
@@ -35,7 +35,7 @@ export async function getServerSideProps(context) {
     };
   }
   const { todoId } = context.params;
-  const user = await Users.findOne({ email: session.user.email });
+  const user = await UserTodo.findOne({ email: session.user.email });
   const todo = user.todos.find((todo) => todo.id === todoId);
 
   return {
